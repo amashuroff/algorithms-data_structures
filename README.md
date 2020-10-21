@@ -1,1 +1,5 @@
-# algorithms-data_structures
+# Algorithms and Data Structures
+
+---
+
+## Practical exercises / Theory
