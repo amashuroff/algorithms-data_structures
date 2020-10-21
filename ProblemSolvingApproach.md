@@ -1,9 +1,9 @@
-\*\*\* How do you improve?
+## How do you improve?
 
 1. Devise a plan - Problem solving approach
 2. Master common problem solving patterns
 
-\*\*\* Problem solving approach.
+### Problem solving approach.
 
 1. Understand a problem
 1. Explore concrete examples
