@@ -17,3 +17,8 @@
 - Pattern involves creating a window which can either be an array or number from one position or another
 - Depending on a certain condition, the window either increases or closes (and new window is created)
 - Very useful to keep track of a subset of data in array/string etc.
+
+### Divide and Conquer
+
+- Divide data set into smaller chunks and then repeat a process with the smaller subset of data
+- Tremendously decreases time complexity

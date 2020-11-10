@@ -112,3 +112,26 @@ function countUniqueValues3(sortedArr) {
 // console.log(countUniqueValues3([1, 1, 1, 1, 1, 2, 3]));
 // console.log(countUniqueValues3([]));
 // console.log(countUniqueValues3([-1, 1, 1, 1, 1, 2, 3]));
+
+function areThereDuplicates(...args) {
+  // good luck. (supply any arguments you deem necessary.)
+  if (!args[0].length) return false;
+  let sortedArr;
+
+  if (typeof args[0][0] === "number") {
+    sortedArr = args[0].sort((a, b) => a - b);
+  }
+  sortedArr = args[0].sort();
+
+  for (let right = 1; right < sortedArr.length; right++) {
+    let left = right - 1;
+    if (sortedArr[left] === sortedArr[right]) return true;
+    left++;
+  }
+  return false;
+}
+
+// console.log(areThereDuplicates(["a", "b", "c"]));
+// console.log(areThereDuplicates(["a", "b", "c", "a"]));
+// console.log(areThereDuplicates([1, 2, 3]));
+// console.log(areThereDuplicates([1, 2, 2]));
