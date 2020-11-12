@@ -97,30 +97,3 @@ function isValidAnagram2(str1, str2) {
 
 // console.log(isValidAnagram2("qwerty", "qeywrt"));
 // console.log(isValidAnagram2("qwerty", "hello"));
-
-function frequencyCounter3(num1, num2) {
-  // good luck. (supply any arguments you deem necessary.)
-  if (num1.toString().length !== num2.toString().length) return false;
-
-  let frequencyCounter = {};
-
-  let sNum1 = num1.toString();
-  let sNum2 = num2.toString();
-
-  for (let num of sNum1) {
-    frequencyCounter[num]
-      ? (frequencyCounter[num] += 1)
-      : (frequencyCounter[num] = 1);
-  }
-
-  for (let num2 of sNum2) {
-    if (!frequencyCounter[num2]) return false;
-
-    frequencyCounter[num2] -= 1;
-  }
-  return true;
-}
-
-// console.log(frequencyCounter3(182, 281));
-// console.log(frequencyCounter3(182, 221));
-// console.log(frequencyCounter3(1823, 221));
