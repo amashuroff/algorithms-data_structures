@@ -135,3 +135,56 @@ function areThereDuplicates(...args) {
 // console.log(areThereDuplicates(["a", "b", "c", "a"]));
 // console.log(areThereDuplicates([1, 2, 3]));
 // console.log(areThereDuplicates([1, 2, 2]));
+
+// Given a sorted array of integers and a target average, determine if there is
+// a pair of values in the array where the average of the pair equals target avg.
+// There may be more than 1 pair that matches the avg target
+
+function averagePair(arr, targetAvg) {
+  // add whatever parameters you deem necessary - good luck!
+
+  if (arr.length === 0) return false;
+
+  let left = arr[0];
+  let right = arr[arr.length - 1];
+
+  for (let i = 0; i < arr.length; i++) {
+    if ((left + right) / 2 === targetAvg) return true;
+
+    if ((left + right) / 2 > targetAvg) {
+      right--;
+    } else {
+      left++;
+    }
+  }
+  return false;
+}
+
+// console.log(averagePair([1, 2, 3], 2.5));
+// console.log(averagePair([-1, 0, 3, 4, 5, 6], 4.1));
+// console.log(averagePair([], 4));
+// console.log(averagePair([1, 3, 3, 5, 6, 7, 10, 12, 19], 8));
+
+// Write a function which takes 2 strings and checks whether the
+// CHARACTERS of the first string form a subsequence of chars in the second string.
+// The order matters.
+
+function isSubsequence(str, targetStr) {
+  // good luck. Add any arguments you deem necessary.
+  let left = 0;
+  let target = "";
+
+  for (let i = 0; i < targetStr.length; i++) {
+    if (str[left] === targetStr[i]) {
+      target += str[left];
+      left++;
+    }
+  }
+  if (target === str) return true;
+  return false;
+}
+
+// console.log(isSubsequence("hello", "hello world"));
+// console.log(isSubsequence("sing", "sting"));
+// console.log(isSubsequence("abc", "abracadabra"));
+// console.log(isSubsequence("abc", "acd"));
