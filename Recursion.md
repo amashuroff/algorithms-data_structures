@@ -37,3 +37,5 @@
 ## PURE RECURSION TIPS
 
 - use slice, spread and concat that make copies of arrays so you don't mutate them
+- strings are immutable, so use slice, sbstr, or substring to make copies of strings
+- to make copies of objects use Object.assign or spread operator.
