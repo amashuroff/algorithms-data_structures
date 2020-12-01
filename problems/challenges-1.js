@@ -136,3 +136,59 @@ function maxSubarraySum4(arr, num) {
 // console.log(maxSubarraySum4([1, 4, 2, 10, 23, 3, 1, 0, 20], 4)); // 39
 // console.log(maxSubarraySum4([-3, 4, 0, -2, 6, -1], 2)); // 5
 // console.log(maxSubarraySum4([2, 3], 3)); // null
+
+//problem 2
+// Function accepts 2 params: array of positive integers and a positive integer
+// The function should return the minimal length of a contiguous subarray
+// of which the sum is greater than or equal to the integer passed to the function.
+// if there is no one, return 0
+function minSubArrayLen(arr, num) {
+  let total = 0;
+  let start = 0;
+  let end = 0;
+  let minimalLength = Infinity;
+
+  while (start < arr.length) {
+    if (total < num && end < arr.length) {
+      total += arr[end];
+      end++;
+    } else if (total >= num) {
+      minimalLength = Math.min(minimalLength, end - start);
+      total -= arr[start];
+      start++;
+    } else {
+      break;
+    }
+  }
+
+  return minimalLength === Infinity ? 0 : minimalLength;
+}
+
+// problem 3
+// Write a function called findLongestSubstring which accepts a string and
+// returns the length of the longest substring with all distinct characters
+
+function findLongestSubstring(str) {
+  let longest = 0;
+  let seen = {};
+  let start = 0;
+
+  for (let i = 0; i < str.length; i++) {
+    let char = str[i];
+
+    if (seen[char]) {
+      start = Math.max(start, seen[char]);
+    }
+
+    console.log(start);
+
+    longest = Math.max(longest, i - start + 1);
+
+    seen[char] = i + 1;
+  }
+}
+
+// console.log(findLongestSubstring("")); // 0
+// console.log(findLongestSubstring("rithmschool")); // 7
+// console.log(findLongestSubstring("thisisawesome")); // 6
+// console.log(findLongestSubstring("bbbb")); // 1
