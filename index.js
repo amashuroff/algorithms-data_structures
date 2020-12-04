@@ -82,7 +82,7 @@ function naiveStringSearch3(str, subStr) {
         break;
       }
 
-      if (j === target.length) {
+      if (j === target.length - 1) {
         count++;
       }
     }
