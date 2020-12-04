@@ -1,92 +1,50 @@
-// O(n)
-function linearSearch(nums, val) {
-  for (let i = 0; i < nums.length; i++) {
-    if (nums[i] === val) return i;
-  }
-
-  return -1;
+// built in js sort
+function numCompare(num1, num2) {
+  // if negative, num1 should be before num2
+  // if positive, num1 should come after num2
+  // if 0, together
+  return num1 - num2;
+  //   return num2 - num1;
 }
 
-// O(log n)
-function binarySearch(sortedArr, val) {
-  let left = 0;
-  let right = sortedArr.length - 1;
+// console.log([1, 3, 5, 5, 2, 7].sort(numCompare));
 
-  while (left <= right) {
-    let middle = Math.floor((right + left) / 2);
-    if (sortedArr[middle] === val) {
-      return middle;
-    } else if (sortedArr[middle] < val) {
-      left = middle + 1;
-    } else {
-      right = middle - 1;
-    }
-  }
-
-  return -1;
+function strLenCompare(len1, len2) {
+  return len1 - len2;
 }
 
-// console.log(binarySearch([1, 2, 3, 4, 5, 6, 7], 2));
-
-// Naive string search - O(n^2)
-function naiveStringSearch(str, target) {
-  // loop over the str
-  // remember current index
-  // match acts as a checker
-  for (let i = 0; i < str.length; i++) {
-    let match = 0;
-    let currentI = i;
-
-    // loop over the target str
-    // if match, increment match by 1
-    // increment str's index by one to check the next character
-    for (let j = 0; j < target.length; j++) {
-      if (str[currentI] !== target[j]) {
-        break;
-      }
-      match++;
-      currentI++;
-    }
-
-    if (match === target.length) return true;
-  }
-
-  return false;
+// swapping
+function swap(arr, idx1, idx2) {
+  let temp = arr[idx1];
+  arr[idx1] = arr[idx2];
+  arr[idx2] = temp;
 }
 
-// console.log(naiveStringSearch("wowzomg", "omg"));
+const swap2 = (arr, idx1, idx2) => {
+  [arr[idx1], arr[idx2]] = [arr[idx2], arr[idx1]];
+};
 
-// Naive approach-2 O(n^2)
-function naiveStringSearch2(str, subStr) {
-  let count = 0;
-  //loop over the long string and stop if the remaining string after i is smaller than the small string
-  for (let i = 0; i < str.length && str.length - i >= subStr.length; i++) {
-    //check if the first character of the short string is the same as the current one in the long string
-    //then if true slice the long string to give a word with the same length as the small string
-    //then compare this string to the small string
-    //if all of this is true then increment
-    if (str[i] === subStr[0] && str.slice(i, i + subStr.length) === subStr)
-      count++;
-  }
-  return count;
-}
+function bubbleSort(arr) {
+  // start looping from the end of an array till the beginning
 
-// Naive approach instructor O(n^2)
-function naiveStringSearch3(str, subStr) {
-  let count = 0;
-
-  for (let i = 0; i < str.length; i++) {
-    for (let j = 0; j < target.length; j++) {
-      // add j to i to get the next char in str
-      if (target[j] !== str[i + j]) {
-        break;
-      }
-
-      if (j === target.length - 1) {
-        count++;
+  // optimizing bubble sort, stop comparing if nearly sorted
+  let noSwaps;
+  for (let i = arr.length; i > 0; i--) {
+    noSwaps = true;
+    // start looping from the start of the array until the already bubbled number
+    // during the first iteration it will go until the end of an array 5 - 1 (i - 1)
+    for (let j = 0; j < i - 1; j++) {
+      // do the swapping
+      if (arr[j] > arr[j + 1]) {
+        swap(arr, j, j + 1);
+        noSwaps = false;
       }
     }
+
+    if (noSwaps) break;
   }
 
-  return count;
+  return arr;
 }
+
+console.log(bubbleSort([1, 3, 1, 7, 5, 10]));
