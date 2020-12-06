@@ -24,6 +24,7 @@ const swap2 = (arr, idx1, idx2) => {
   [arr[idx1], arr[idx2]] = [arr[idx2], arr[idx1]];
 };
 
+// works fine on almost sorted arrays
 function bubbleSort(arr) {
   // start looping from the end of an array till the beginning
 

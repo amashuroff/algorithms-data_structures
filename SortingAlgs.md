@@ -4,4 +4,7 @@
 
 ---
 
-### Bubble sort
+### Bubble sort / Insertion sort / Selection sort
+
+- all are roughly the same
+- all have avg time complexity: quadratic

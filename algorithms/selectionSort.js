@@ -8,6 +8,7 @@ function selectionSort(arr) {
   for (let i = 0; i < arr.length; i++) {
     // remember the index at the start of the array iteration
     // [123]
+    // assume that first item in the array is minimum
     let min = i;
 
     // [23]
