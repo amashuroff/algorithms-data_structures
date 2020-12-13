@@ -8,3 +8,9 @@
 
 - all are roughly the same
 - all have avg time complexity: quadratic
+
+### Merge sort - O(n log n)
+
+- combination of sorting and merging
+- split all the numbers in solo arrays
+- merge and sort
