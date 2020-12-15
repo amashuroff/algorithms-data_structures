@@ -365,6 +365,258 @@ function maxSubArraySum3(arr, num) {
 // console.log(maxSubArraySum3([4, 2, 1, 5], 1)); // 5
 ```
 
+### Challenges/Problem sets: Multiple pointers, frequency counters, sliding window
+
+```javascript
+// frequency counters
+// problem 1
+// Given 2 numbers, find out if the 2 numbers have the same frequency of characters
+function sameFrequency(num1, num2) {
+  // good luck. Add any arguments you deem necessary.
+  if (num1.toString().length !== num2.toString().length) return false;
+
+  let frequencyCounter = {};
+
+  let sNum1 = num1.toString();
+  let sNum2 = num2.toString();
+
+  for (let num of sNum1) {
+    frequencyCounter[num]
+      ? (frequencyCounter[num] += 1)
+      : (frequencyCounter[num] = 1);
+  }
+
+  for (let num2 of sNum2) {
+    if (!frequencyCounter[num2]) return false;
+
+    frequencyCounter[num2] -= 1;
+  }
+  return true;
+}
+// console.log(frequencyCounter3(182, 281));
+// console.log(frequencyCounter3(182, 221));
+// console.log(frequencyCounter3(1823, 221));
+
+// multiple pointers
+// problem 1
+// takes in a variable number of arguments
+// checks whether there are any duplicates among the arguments passed in
+function areThereDuplicates(...args) {
+  // good luck. (supply any arguments you deem necessary.)
+  if (!args[0].length) return false;
+  let sortedArr;
+
+  if (typeof args[0][0] === "number") {
+    sortedArr = args[0].sort((a, b) => a - b);
+  }
+  sortedArr = args[0].sort();
+
+  for (let right = 1; right < sortedArr.length; right++) {
+    let left = right - 1;
+    if (sortedArr[left] === sortedArr[right]) return true;
+    left++;
+  }
+  return false;
+}
+
+// console.log(areThereDuplicates(["a", "b", "c"]));
+// console.log(areThereDuplicates(["a", "b", "c", "a"]));
+// console.log(areThereDuplicates([1, 2, 3]));
+// console.log(areThereDuplicates([1, 2, 2]));
+
+// problem 2
+// Given a sorted array of integers and a target average, determine if there is
+// a pair of values in the array where the average of the pair equals target avg.
+// There may be more than 1 pair that matches the avg target
+
+function averagePair(arr, targetAvg) {
+  // add whatever parameters you deem necessary - good luck!
+
+  if (arr.length === 0) return false;
+
+  let left = 0;
+  let right = arr.length - 1;
+
+  for (let i = 0; i < arr.length; i++) {
+    if ((arr[left] + arr[right]) / 2 === targetAvg) return true;
+
+    if ((arr[left] + arr[right]) / 2 > targetAvg) {
+      right--;
+    } else {
+      left++;
+    }
+  }
+  return false;
+}
+
+// console.log(averagePair([1, 2, 3], 2.5)); // true
+// console.log(averagePair([-1, 0, 3, 4, 5, 6], 4.1)); //false
+// console.log(averagePair([], 4)); // false
+// console.log(averagePair([1, 3, 3, 5, 6, 7, 10, 12, 19], 8)); //true
+
+// problem 3
+// Write a function which takes 2 strings and checks whether the
+// CHARACTERS of the first string form a subsequence of chars in the second string.
+// The order matters.
+
+function isSubsequence(str, targetStr) {
+  // good luck. Add any arguments you deem necessary.
+  let left = 0;
+  let target = "";
+
+  for (let i = 0; i < targetStr.length; i++) {
+    if (str[left] === targetStr[i]) {
+      target += str[left];
+      left++;
+    }
+  }
+  if (target === str) return true;
+  return false;
+}
+
+// console.log(isSubsequence("hello", "hello world")); // true
+// console.log(isSubsequence("sing", "sting")); // true
+// console.log(isSubsequence("abc", "abracadabra"));  //true
+// console.log(isSubsequence("abc", "acd"));  // false
+
+// sliding window
+// problem 1
+// Write a function that finds the maximum sum of subarray
+// with the length of the number passed to the function
+function maxSubarraySum4(arr, num) {
+  // add whatever parameters you deem necessary - good luck!
+  if (num > arr.length) return null;
+
+  let maxSum = 0;
+
+  for (let i = 0; i < num; i++) {
+    maxSum += arr[i];
+  }
+  let currentSum = maxSum;
+
+  for (let i = num; i < arr.length; i++) {
+    currentSum += arr[i] - arr[i - num];
+    maxSum = Math.max(maxSum, currentSum);
+  }
+
+  return maxSum;
+}
+
+// console.log(maxSubarraySum4([100, 200, 300, 400], 2)); // 700
+// console.log(maxSubarraySum4([1, 4, 2, 10, 23, 3, 1, 0, 20], 4)); // 39
+// console.log(maxSubarraySum4([-3, 4, 0, -2, 6, -1], 2)); // 5
+// console.log(maxSubarraySum4([2, 3], 3)); // null
+
+//problem 2
+// Function accepts 2 params: array of positive integers and a positive integer
+// The function should return the minimal length of a contiguous subarray
+// of which the sum is greater than or equal to the integer passed to the function.
+// if there is no one, return 0
+function minSubArrayLen(arr, num) {
+  let total = 0;
+  let start = 0;
+  let end = 0;
+  let minimalLength = Infinity;
+
+  while (start < arr.length) {
+    if (total < num && end < arr.length) {
+      total += arr[end];
+      end++;
+    } else if (total >= num) {
+      minimalLength = Math.min(minimalLength, end - start);
+      total -= arr[start];
+      start++;
+    } else {
+      break;
+    }
+  }
+
+  return minimalLength === Infinity ? 0 : minimalLength;
+}
+
+// problem 3
+// Write a function called findLongestSubstring which accepts a string and
+// returns the length of the longest substring with all distinct characters
+
+function findLongestSubstring(str) {
+  let longest = 0;
+  let seen = {};
+  let start = 0;
+
+  for (let i = 0; i < str.length; i++) {
+    let char = str[i];
+
+    if (seen[char]) {
+      start = Math.max(start, seen[char]);
+    }
+
+    console.log(start);
+
+    longest = Math.max(longest, i - start + 1);
+
+    seen[char] = i + 1;
+  }
+}
+
+// console.log(findLongestSubstring("")); // 0
+// console.log(findLongestSubstring("rithmschool")); // 7
+// console.log(findLongestSubstring("thisisawesome")); // 6
+// console.log(findLongestSubstring("bbbb")); // 1
+```
+
+### More problems
+
+```javascript
+"use strict";
+// write a function that takes in a string and returns counts of each character in a string
+// output {a: 5, b: 2, c:2}
+
+// initial / quick / does work for not alphanumeric chars
+function charCount(str) {
+  const sortedString = str.split(" ").sort().join("").toLowerCase();
+  let previousChar = "";
+  let counter = 0;
+  let result = {};
+  for (let char of sortedString) {
+    if (char !== previousChar) {
+      counter = 0;
+      previousChar = char;
+    }
+    counter++;
+    result[char] = counter;
+  }
+  return result;
+}
+
+// refactored/instructor
+function charCount2(str) {
+  const sortedString = str.toLowerCase();
+  let result = {};
+  for (let char of sortedString) {
+    if (isAlphaNumeric(char)) {
+      result[char] = ++result[char] || 1;
+    }
+  }
+  return result;
+}
+
+// instructor solution
+function isAlphaNumeric(char) {
+  let code = char.charCodeAt(0);
+  if (
+    !(code > 47 && code < 58) &&
+    !(code > 64 && code < 91) &&
+    !(code > 96 && code < 123)
+  ) {
+    return false;
+  }
+  return true;
+}
+
+console.log(charCount("helloWorlds123912!!!!"));
+console.log(charCount2("hello Worlds 123912!!!!"));
+```
+
 ### Divide and Conquer
 
 - Divide data set into smaller chunks and then repeat a process with the smaller subset of data
@@ -377,40 +629,6 @@ function maxSubArraySum3(arr, num) {
 ### What is Recursion?
 
 - A process that calls itself (function)
-
-### It is everywhere!
-
-- JSON.parse / JSON.stringify
-- document.getElementById, and DOM traversal algorithms
-- Object traversal
-- More complex data structures
-- Sometimes it is a cleaner alternative solution
-
-### The Call stack
-
-- Anytime function is invoked, its pushed to the top of the stack
-- Anytime JS engine sees return keyword or function ends the compiler will remove it from the stack (pop it)
-
-### Two essential parts of a recursive function
-
-- Base case, where recursive calls stop
-- Different input
-
-### Where things go wrong
-
-- No base case
-- Forgetting to return or return the wrong value
-- STACK OVERFLOW!!!
-
-## HELPER METHOD RECURSION PATTERN
-
-- using recursive function of a function that was declared in another function (helper)
-
-## PURE RECURSION TIPS
-
-- use slice, spread and concat that make copies of arrays so you don't mutate them
-- strings are immutable, so use slice, sbstr, or substring to make copies of strings
-- to make copies of objects use Object.assign or spread operator.
 
 ```javascript
 // first simple recursive function
@@ -444,7 +662,37 @@ function factorial(num) {
 }
 
 // console.log(factorial(4));
+```
 
+### It is everywhere!
+
+- JSON.parse / JSON.stringify
+- document.getElementById, and DOM traversal algorithms
+- Object traversal
+- More complex data structures
+- Sometimes it is a cleaner alternative solution
+
+### The Call stack
+
+- Anytime function is invoked, its pushed to the top of the stack
+- Anytime JS engine sees return keyword or function ends the compiler will remove it from the stack (pop it)
+
+### Two essential parts of a recursive function
+
+- Base case, where recursive calls stop
+- Different input
+
+### Where things go wrong
+
+- No base case
+- Forgetting to return or return the wrong value
+- STACK OVERFLOW!!!
+
+## HELPER METHOD RECURSION PATTERN
+
+- using recursive function of a function that was declared in another function (helper)
+
+```javascript
 // HELPER METHOD RECURSION PATTERN
 
 function outer(input) {
@@ -483,7 +731,15 @@ function collectOddValues(numsArr) {
 }
 
 // console.log(collectOddValues([1, 2, 3, 4, 5, 6]));
+```
 
+## PURE RECURSION TIPS
+
+- use slice, spread and concat that make copies of arrays so you don't mutate them
+- strings are immutable, so use slice, sbstr, or substring to make copies of strings
+- to make copies of objects use Object.assign or spread operator.
+
+```javascript
 // PURE RECURSION
 
 function collectOddValuesPure(arr) {
@@ -503,7 +759,11 @@ function collectOddValuesPure(arr) {
 }
 
 // console.log(collectOddValuesPure([1, 2, 3, 4, 5, 6]));
+```
 
+### Recursion problem set
+
+```javascript
 // problem-1
 // Write a function that accepts a base and exponent,
 // the function should return the power of the base to the exponent.
@@ -570,3 +830,345 @@ function fib(num) {
 // fib(28); // 317811
 // console.log(fib(35)); // 9227465
 ```
+
+## Searching Algorithms
+
+---
+
+### Linear Search
+
+- from O(1) to O(n)
+
+```javascript
+// O(n)
+function linearSearch(nums, val) {
+  for (let i = 0; i < nums.length; i++) {
+    if (nums[i] === val) return i;
+  }
+
+  return -1;
+}
+```
+
+### Binary search
+
+- Eliminate half of the remaining elements at a time
+- Only works on sorted arrays
+
+```javascript
+// O(log n)
+function binarySearch(sortedArr, val) {
+  let left = 0;
+  let right = sortedArr.length - 1;
+
+  while (left <= right) {
+    let middle = Math.floor((right + left) / 2);
+    if (sortedArr[middle] === val) {
+      return middle;
+    } else if (sortedArr[middle] < val) {
+      left = middle + 1;
+    } else {
+      right = middle - 1;
+    }
+  }
+
+  return -1;
+}
+// console.log(binarySearch([1, 2, 3, 4, 5, 6, 7], 2));
+```
+
+### Naive string search
+
+```javascript
+// Naive string search - O(n^2)
+function naiveStringSearch(str, target) {
+  // loop over the str
+  // remember current index
+  // match acts as a checker
+  for (let i = 0; i < str.length; i++) {
+    let match = 0;
+    let currentI = i;
+
+    // loop over the target str
+    // if match, increment match by 1
+    // increment str's index by one to check the next character
+    for (let j = 0; j < target.length; j++) {
+      if (str[currentI] !== target[j]) {
+        break;
+      }
+      match++;
+      currentI++;
+    }
+
+    if (match === target.length) return true;
+  }
+
+  return false;
+}
+
+// console.log(naiveStringSearch("wowzomg", "omg"));
+
+// Naive approach-2 O(n^2)
+function naiveStringSearch2(str, subStr) {
+  let count = 0;
+  //loop over the long string and stop if the remaining string after i is smaller than the small string
+  for (let i = 0; i < str.length && str.length - i >= subStr.length; i++) {
+    //check if the first character of the short string is the same as the current one in the long string
+    //then if true slice the long string to give a word with the same length as the small string
+    //then compare this string to the small string
+    //if all of this is true then increment
+    if (str[i] === subStr[0] && str.slice(i, i + subStr.length) === subStr)
+      count++;
+  }
+  return count;
+}
+
+// Naive approach instructor O(n^2)
+function naiveStringSearch3(str, subStr) {
+  let count = 0;
+
+  for (let i = 0; i < str.length; i++) {
+    for (let j = 0; j < target.length; j++) {
+      // add j to i to get the next char in str
+      if (target[j] !== str[i + j]) {
+        break;
+      }
+
+      if (j === target.length - 1) {
+        count++;
+      }
+    }
+  }
+
+  return count;
+}
+```
+
+## Sorting Algorithms
+
+- Sorting is rearranging items in a collection so that the items are in sime kind of order
+
+---
+
+### Bubble sort / Insertion sort / Selection sort
+
+- all are roughly the same
+- all have avg time complexity: quadratic
+
+### Bubble sort
+
+```javascript
+// built in js sort
+function numCompare(num1, num2) {
+  // if negative, num1 should be before num2
+  // if positive, num1 should come after num2
+  // if 0, together
+  return num1 - num2;
+  //   return num2 - num1;
+}
+
+// console.log([1, 3, 5, 5, 2, 7].sort(numCompare));
+
+function strLenCompare(len1, len2) {
+  return len1 - len2;
+}
+
+// swapping
+function swap(arr, idx1, idx2) {
+  let temp = arr[idx1];
+  arr[idx1] = arr[idx2];
+  arr[idx2] = temp;
+}
+
+const swap2 = (arr, idx1, idx2) => {
+  [arr[idx1], arr[idx2]] = [arr[idx2], arr[idx1]];
+};
+
+// works fine on almost sorted arrays
+function bubbleSort(arr) {
+  // start looping from the end of an array till the beginning
+
+  // optimizing bubble sort, stop comparing if nearly sorted
+  let noSwaps;
+  for (let i = arr.length; i > 0; i--) {
+    noSwaps = true;
+    // start looping from the start of the array until the already bubbled number
+    // during the first iteration it will go until the end of an array 5 - 1 (i - 1)
+    for (let j = 0; j < i - 1; j++) {
+      // do the swapping
+      if (arr[j] > arr[j + 1]) {
+        swap(arr, j, j + 1);
+        noSwaps = false;
+      }
+    }
+
+    if (noSwaps) break;
+  }
+
+  return arr;
+}
+
+// console.log(bubbleSort([1, 3, 1, 7, 5, 10]));
+```
+
+### Insertion sort
+
+```javascript
+function swap(arr, idx1, idx2) {
+  let temp = arr[idx1];
+  arr[idx1] = arr[idx2];
+  arr[idx2] = temp;
+}
+
+// works fine when the data is coming (for example live data stream)
+// since largest portion of an array is already sorted
+function insertionSort(arr) {
+  // compare the second elem with the one before and swap if necessary
+  if (arr[1] < arr[0]) {
+    swap(arr, 0, 1);
+  }
+
+  // start by picking the second elem in the array
+  for (let i = 1; i < arr.length - 1; i++) {
+    // arr.length - 1 so we don't get undefined on the last iteration
+    // if the next element in the array is > then previous one
+    if (arr[i + 1] < arr[i]) {
+      // iterate through sorted portion
+      for (let j = 0; j < i + 1; j++) {
+        // insert an element, where it belongs
+        if (arr[j] > arr[i + 1]) {
+          swap(arr, j, i + 1);
+        }
+      }
+    }
+  }
+
+  return arr;
+}
+
+// console.log(insertionSort([3, 1, 2, 7, 9, 2]));
+
+function insertionSort2(arr) {
+  for (let i = 1; i < arr.length; i++) {
+    let currentVal = arr[i];
+
+    for (var j = i - 1; j >= 0 && arr[j] > currentVal; j--) {
+      arr[j + 1] = arr[j];
+    }
+
+    // console.log(j);
+    arr[j + 1] = currentVal;
+  }
+
+  return arr;
+}
+
+// console.log(insertionSort2([3, 1, 2, 7, 9, 2]));
+```
+
+### Selection Sort
+
+```javascript
+function swap(arr, idx1, idx2) {
+  let temp = arr[idx1];
+  arr[idx1] = arr[idx2];
+  arr[idx2] = temp;
+}
+
+function selectionSort(arr) {
+  for (let i = 0; i < arr.length; i++) {
+    // remember the index at the start of the array iteration
+    // [123]
+    // assume that first item in the array is minimum
+    let min = i;
+
+    // [23]
+    // iterate through the array starting from i + 1
+    for (let j = i + 1; j < arr.length; j++) {
+      // compare values, update min index if condition
+      if (arr[min] > arr[j]) {
+        min = j;
+      }
+    }
+
+    // at the end of the iteration compare if the starting index is not === to min
+    if (i !== min) {
+      swap(arr, i, min);
+    }
+  }
+
+  return arr;
+}
+
+// console.log(selectionSort([3, 1, 2, 7, 9, 2]));
+```
+
+### Merge sort - O(n log n)
+
+- combination of sorting and merging
+- split all the numbers in solo arrays
+- merge and sort
+
+```javascript
+// Merging arrays
+// Given 2 arrays are sorted, this helper function should create a new array
+// which is also sorted, and consists of all the elements in the 2 input arrays
+// the function should run in O(n + m) (n - first arr, m-second arr) time and O(n + m) space, and
+// should not modify the parameters passed into in
+
+function merge(arr1, arr2) {
+  let result = [];
+
+  let i = 0;
+  let j = 0;
+  // while i or j is less then or equal to the last el of the array
+  // meaning we exhausted one of the arrays
+  while (i < arr1.length && j < arr2.length) {
+    // push the smallest number to the resulting array
+
+    if (arr1[i] < arr2[j]) {
+      result.push(arr1[i]);
+      i++;
+    } else {
+      result.push(arr2[j]);
+      j++;
+    }
+  }
+
+  // if 1 array still has elements in it after the while loop,
+  // push rest of an array to the result
+
+  while (i < arr1.length) {
+    result.push(arr1[i]);
+    i++;
+  }
+
+  while (j < arr2.length) {
+    result.push(arr2[j]);
+    j++;
+  }
+
+  return result;
+}
+
+// console.log(merge([1, 2, 3], [5, 6, 7, 8, 9]));
+
+// Merge sort O(n log n) - avg, space - O(n)
+// Log(n) splits, n comparisons
+function mergeSort(arr) {
+  if (arr.length === 1) return arr;
+
+  return merge(
+    mergeSort(arr.slice(0, Math.ceil(arr.length / 2))),
+    mergeSort(arr.slice(Math.ceil(arr.length / 2)))
+  );
+}
+
+// console.log(mergeSort([1, 3, 5, 2, 7, 8, 9, 2]));
+```
+
+### Quick sort
+
+- as merge sort, takes advantage of knowing that arrays of [] or [1] are always sorted
+- works by selecting pivot, and moving all the numbers that are greater then that number to the right, and all the numbers that are less then that number to the right
+- selecting a pivot is an important part, The runtime of quick sort depends on how one selects the pivot, ideally (median value)
