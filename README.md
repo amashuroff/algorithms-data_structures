@@ -1172,6 +1172,9 @@ function mergeSort(arr) {
 - as merge sort, takes advantage of knowing that arrays of [] or [1] are always sorted
 - works by selecting pivot, and moving all the numbers that are greater then that number to the right, and all the numbers that are less then that number to the right
 - selecting a pivot is an important part, The runtime of quick sort depends on how one selects the pivot, ideally (median value)
+- Best case: O(log n) , O(n) comparisons per compositions, O(n log n)
+- Worst case: O(n) quick sorting already sorted array, with this current setup, where the pivot is the first el.
+- Worst case happens when the pivot is always the min or max element of an array
 
 ```javascript
 function pivotHelper(arr, start = 0, end = arr.length - 1) {
@@ -1210,3 +1213,82 @@ function quickSort(arr, left = 0, right = arr.length - 1) {
 ```
 
 ### Radix Sort
+
+- there is a mathematical bound to comparison sorting algs, it is related to the information that we get from a single comparison
+- fastest algorithm is going to be O(n log n), if doing only 1 comparison at a time
+- Radix sort never makes comparisons between 2 elements
+- It exploits the fact that information about the number is encoded in the number of digits
+- Avg time complexity O(nk), O(n + k) space complexity
+
+```javascript
+function getDigit(num, place) {
+  return Math.floor((Math.abs(num) / Math.pow(10, place)) % 10);
+}
+// console.log(getDigit1(12345, 0)); // 5
+
+function digitCount(num) {
+  // My solution
+  // returns the number of digits in num
+  if (num === 0) return 1;
+
+  let result = 0;
+
+  while (true) {
+    num /= 10;
+    result++;
+    if (num < 1) break;
+  }
+
+  return result;
+}
+
+// console.log(digitCount(12345)); // 5
+// console.log(digitCount(1)); // 1
+
+// Stack overflow solution
+function digitCount1(num) {
+  // returns the number of digits in num
+
+  if (num === 0) return 1;
+  return Math.floor(Math.log10(Math.abs(num))) + 1;
+}
+
+// console.log(digitCount1(12345)); // 5
+
+// My solution
+function mostDigits(numArr) {
+  // given an array of numbers, returns the number of digits in the largest number in the list
+
+  return digitCount(Math.max(...numArr));
+}
+
+// console.log(mostDigits([1, 2, 333, 2, 5]));
+
+// Radix sort
+function radixSort(arr) {
+  // define a function that accepts a list of numbers
+  // figure out how many digits the largest number has
+  // Loop from k = 0 up to this largest number of digits
+  // for each iteration of the loop:
+  //    create buckets for each digit from (0 to 9)
+  //    place each number in the corresponding bucket based on its k-th digit
+  // Replace our existing array with values from our buckets, starting from 0 and going up to 9
+  // Return a list in the end
+
+  const maxDigits = mostDigits(arr);
+
+  for (let k = 0; k < maxDigits; k++) {
+    const buckets = [[], [], [], [], [], [], [], [], [], []];
+
+    for (let i = 0; i < arr.length; i++) {
+      buckets[getDigit(arr[i], k)].push(arr[i]);
+    }
+
+    arr = [].concat(...buckets);
+  }
+
+  return arr;
+}
+
+// console.log(radixSort([1, 3, 77, 5823, 0, 123, 130]));
+```
