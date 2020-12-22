@@ -1292,3 +1292,20 @@ function radixSort(arr) {
 
 // console.log(radixSort([1, 3, 77, 5823, 0, 123, 130]));
 ```
+
+## Data structures
+
+- Data structures are collections of values, the relationships among them, and the functions or operations that can be applied to the data
+- Example: Array --> it contains values, relationships between them (order), and all sorts of functionality
+- Different DS excel at different things, many of them are highly specialized.
+- There is NO BEST DS
+
+### Singly Linked List
+
+- List consists of a bunch of nodes
+- Node has a value
+- Node references the next node (pointer)
+- DS that contains head (beginning), tail (end) and a length property, we keep track of those things
+- SLL vs ARR:
+- SLL do not have indexes, random access do not allowed
+- ARR insertion and deletion can be expensive
