@@ -1,10 +1,8 @@
 # Algorithms and Data Structures
 
----
+\*[Problem Solving](#problem-solving-approach.)
 
 ## How do you improve?
-
----
 
 1. Devise a plan - Problem solving approach
 2. Master common problem solving patterns
@@ -48,8 +46,6 @@
 7. How have other people solved this problem?
 
 ## Problem Solving Patterns.
-
----
 
 ### Frequency counters
 
@@ -624,8 +620,6 @@ console.log(charCount2("hello Worlds 123912!!!!"));
 
 ## Recursion
 
----
-
 ### What is Recursion?
 
 - A process that calls itself (function)
@@ -833,8 +827,6 @@ function fib(num) {
 
 ## Searching Algorithms
 
----
-
 ### Linear Search
 
 - from O(1) to O(n)
@@ -947,8 +939,6 @@ function naiveStringSearch3(str, subStr) {
 ## Sorting Algorithms
 
 - Sorting is rearranging items in a collection so that the items are in sime kind of order
-
----
 
 ### Bubble sort / Insertion sort / Selection sort
 
