@@ -1,13 +1,25 @@
 # Algorithms and Data Structures
 
-\*[Problem Solving](#problem-solving-approach.)
+## Table of Contents
+
+[Problem Solving Approach](#how-do-you-improve?)
+
+[Problem Solving Patterns](#problem-solving-patterns)
+
+[Recursion](#recursion)
+
+[Searching Algorithms](#searching-algorithms)
+
+[Sorting Algorithms](#sorting-algorithms)
+
+[Data structures](#data-structures)
 
 ## How do you improve?
 
 1. Devise a plan - Problem solving approach
 2. Master common problem solving patterns
 
-### Problem solving approach.
+### Problem solving approach
 
 1. Understand a problem
 1. Explore concrete examples
@@ -45,7 +57,7 @@
 6. Can you think of other ways to refactor?
 7. How have other people solved this problem?
 
-## Problem Solving Patterns.
+## Problem Solving Patterns
 
 ### Frequency counters
 
