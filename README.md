@@ -1564,3 +1564,197 @@ list.push("third item");
 
 // console.log(list);
 ```
+
+### Doubly Linked List
+
+- More flexible, but takes more memory (new pointer)
+- Big 0:
+
+1. Insertion O(1)
+2. Removal O(1)
+3. Searching O(n) (technically N/2)
+4. Access O(n)
+
+```javascript
+class Node {
+  constructor(val) {
+    this.val = val;
+    this.next = null;
+    this.prev = null;
+  }
+}
+
+class DoublyLinkedList {
+  constructor() {
+    this.head = null;
+    this.tail = null;
+    this.length = null;
+  }
+
+  push(val) {
+    const node = new Node(val);
+    if (!this.head) {
+      this.tail = node;
+      this.head = node;
+    } else {
+      this.tail.next = node;
+      node.prev = this.tail;
+      this.tail = node;
+    }
+    this.length++;
+    return this;
+  }
+
+  pop() {
+    if (!this.length) return undefined;
+
+    const prevTail = this.tail;
+    if (this.length === 1) {
+      this.tail = null;
+      this.head = null;
+    } else {
+      this.tail = prevTail.prev;
+      this.tail.next = null;
+    }
+    // return only the node, without "prev" reference
+    prevTail.prev = null;
+    this.length--;
+    return prevTail;
+  }
+
+  shift() {
+    if (!this.length) return undefined;
+
+    const prevHead = this.head;
+    if (this.length === 1) {
+      this.tail = null;
+      this.head = null;
+    } else {
+      this.head = prevHead.next;
+      this.head.prev = null;
+    }
+    prevHead.next = null;
+    this.length--;
+    return prevHead;
+  }
+
+  unshift(val) {
+    const newNode = new Node(val);
+
+    if (!this.length) {
+      this.head = newNode;
+      this.tail = newNode;
+    } else {
+      this.head.prev = newNode;
+      newNode.next = this.head;
+      this.head = newNode;
+    }
+    this.length++;
+    return this;
+  }
+
+  get(idx) {
+    // working from one of the other sides, depending on the idx provided
+    if (idx === this.length || idx > this.length) return null;
+
+    const half = Math.floor(this.length / 2);
+    let result;
+    if (idx < half) {
+      let i = 0;
+      result = this.head;
+      while (i !== idx) {
+        result = result.next;
+        i++;
+      }
+    } else {
+      let i = this.length - 1;
+      result = this.tail;
+      while (i !== idx) {
+        result = result.prev;
+        i--;
+      }
+    }
+
+    return result;
+  }
+
+  set(idx, val) {
+    const node = this.get(idx);
+    if (!node) return false;
+
+    node.val = val;
+    return true;
+  }
+
+  insert(idx, val) {
+    if (idx < 0 || idx > this.length) return false;
+
+    if (idx === 0) return !!this.unshift(val);
+
+    if (idx === this.length) return !!this.push(val);
+
+    const newNode = new Node(val);
+    const beforeNode = this.get(idx - 1);
+    const afterNode = beforeNode.next;
+
+    (beforeNode.next = newNode), (newNode.next = afterNode);
+    (newNode.prev = beforeNode), (afterNode.prev = newNode);
+    this.length++;
+    return true;
+  }
+
+  remove(idx) {
+    if (idx === this.length || idx > this.length) return undefined;
+    if (idx === 0) return this.shift();
+    if (idx === this.length - 1) return this.pop();
+
+    const nodeBefore = this.get(idx - 1);
+    const node = nodeBefore.next;
+    const nodeAfter = node.next;
+
+    nodeBefore.next = nodeAfter;
+    nodeAfter.prev = nodeBefore;
+    node.next = null;
+    node.prev = null;
+    this.length--;
+    return node;
+  }
+}
+
+const dll = new DoublyLinkedList();
+
+// PUSH
+dll.push(1);
+dll.push(2);
+dll.push(3);
+// PUSH
+
+// POP
+// dll.pop();
+//POP
+
+//SHIFT
+// dll.shift();
+//SHIFT
+
+//UNSHIFT
+// dll.unshift(3);
+//UNSHIFT
+
+//GET
+// console.log(dll.get(1));
+//GET
+
+//SET
+// dll.set(1, 10);
+//SET
+
+//INSERT
+// dll.insert(2, 100);
+//INSERT
+
+//REMOVE
+// dll.remove(1);
+//REMOVE
+console.log(dll);
+```
