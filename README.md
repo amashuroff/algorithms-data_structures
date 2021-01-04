@@ -1719,6 +1719,21 @@ class DoublyLinkedList {
     this.length--;
     return node;
   }
+
+  reverse() {
+    // swap head and tail
+    let node = this.head;
+    this.head = this.tail;
+    this.tail = node;
+
+    for (let i = 0; i < this.length; i++) {
+      // previous node will be next node in the normal order
+      let prev = node.next;
+      node.next = node.prev;
+      node.prev = prev;
+      node = prev;
+    }
+  }
 }
 
 const dll = new DoublyLinkedList();
@@ -1757,4 +1772,107 @@ dll.push(3);
 // dll.remove(1);
 //REMOVE
 console.log(dll);
+```
+
+### Stacks and Queues
+
+- Both are abstract data structures (collection of data)
+
+1. Stack - LIFO (last in first out), used in UNDO/RE-DO, managing function invocations, routing/history object is treated as a stack, pages you visited.
+
+- Big O of Stacks -> insertion/removal: O(1), searching, access: O(n) (but we care only about insertion/removal in stacks)
+
+```javascript
+class Node {
+  constructor(val) {
+    this.val = val;
+    this.next = null;
+  }
+}
+
+class Stack {
+  constructor() {
+    this.first = null;
+    this.last = null;
+    this.size = 0;
+  }
+
+  // push and pop are actually shift and unshift
+
+  pop() {
+    // removes the first element of the ll and returns it
+    if (!this.first) return undefined;
+
+    const shiftedValue = this.first;
+
+    this.first = this.first.next;
+    this.size--;
+
+    return shiftedValue;
+  }
+
+  push(val) {
+    const newNode = new Node(val);
+
+    if (!this.first) {
+      this.first = newNode;
+      this.first = this.last;
+    } else {
+      const prevHead = this.first;
+      this.first = newNode;
+      this.first.next = prevHead;
+    }
+    this.size++;
+    return this;
+  }
+}
+```
+
+2. Queues - FIFO (first in first out) -> Background tasks, uploading resources, printing for example, same Big O as in Stacks
+
+```javascript
+class Node {
+  constructor(val) {
+    this.val = val;
+    this.next = null;
+  }
+}
+
+// add to the end and remove from the beginning
+class Queue {
+  constructor() {
+    this.first = null;
+    this.last = null;
+    this.size = 0;
+  }
+
+  enqueue(val) {
+    const newNode = new Node(val);
+
+    if (!this.first) {
+      this.first = newNode;
+      this.last = this.first;
+    } else {
+      this.last.next = newNode;
+      this.last = newNode;
+    }
+    this.size++;
+    return this;
+  }
+
+  dequeue(val) {
+    const newNode = new Node(val);
+
+    if (!this.first) {
+      this.first = newNode;
+      this.first = this.tail;
+    } else {
+      const prevHead = this.first;
+      this.first = newNode;
+      this.first.next = prevHead;
+    }
+    this.size++;
+    return this;
+  }
+}
 ```
