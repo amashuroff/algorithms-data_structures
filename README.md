@@ -1876,3 +1876,112 @@ class Queue {
   }
 }
 ```
+
+### Trees
+
+- a tree consists of nodes in a child/parent relationship
+- Trees are non-linear, in ll or dll there is only one path
+- Think of ll as a special case of a tree
+- Leaf a node with no children
+- Edge an array between the nodes
+
+1. Just a tree, can have multiple nodes and branches
+2. Binary tree, can have no more than 2 branches
+3. Binary Search Tree, items are sorted, lesser items to the left (lesser than the branch), greater to the right
+
+- BST: Searching, Insertion O(log n) -> best and avg case. Why, there are some valid BST cases that have S,I of O(n), like 0->1->2->3 (completely valid, like ll)
+
+```javascript
+class Node {
+  constructor(val) {
+    this.left = null;
+    this.right = null;
+    this.val = val;
+  }
+}
+
+class BST {
+  constructor() {
+    this.root = null;
+  }
+
+  insert(val) {
+    const newNode = new Node(val);
+    if (!this.root) {
+      this.root = newNode;
+      return this;
+    }
+
+    let current = this.root;
+
+    while (true) {
+      if (val < current.val) {
+        if (current.left) {
+          current = current.left;
+        } else {
+          current.left = newNode;
+          return this;
+        }
+      } else if (val > current.val) {
+        if (current.right) {
+          current = current.right;
+        } else {
+          current.right = newNode;
+          return this;
+        }
+      } else {
+        console.log("Already exists");
+        return this;
+      }
+    }
+  }
+
+  find(val) {
+    if (!this.root) return undefined;
+    if (this.root.val === val) return true;
+
+    let current = this.root;
+
+    while (current !== null) {
+      if (val < current.val) {
+        current = current.left;
+      } else if (val > current.val) {
+        current = current.right;
+      } else {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  findRecursive(val, node = this.root) {
+    if (!node) return false;
+    if (node.val === val) return true;
+
+    if (node.val > val) {
+      return this.findRecursive(val, node.left);
+    }
+
+    if (node.val < val) {
+      return this.findRecursive(val, node.right);
+    }
+  }
+}
+
+const tree = new BST();
+tree.root = new Node(10);
+tree.root.left = new Node(5);
+tree.root.right = new Node(15);
+console.log(tree);
+
+//INSERT
+// tree.insert(30);
+//INSERT
+
+//FIND
+// console.log(tree.find(100));
+//FIND
+```
+
+### Tree traversal
