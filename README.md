@@ -1985,3 +1985,154 @@ console.log(tree);
 ```
 
 ### Tree traversal
+
+- Two ways of traversing a tree
+- Breadth first search
+- Depth first search
+- Visiting all the nodes at the same level? Or going down the tree first?
+- Time complexity of BFS and DFS is the same
+- if tree is WIDE, breadth first will take up more space
+- if tree is DEEP, depth first will take up more space
+- In order is useful in BST's
+- Pre order is useful to clone the tree in array for example/db
+
+```javascript
+class Node {
+  constructor(val) {
+    this.left = null;
+    this.right = null;
+    this.val = val;
+  }
+}
+
+class BST {
+  constructor() {
+    this.root = null;
+  }
+
+  insert(val) {
+    const newNode = new Node(val);
+    if (!this.root) {
+      this.root = newNode;
+      return this;
+    }
+
+    let current = this.root;
+
+    while (true) {
+      if (val < current.val) {
+        if (current.left) {
+          current = current.left;
+        } else {
+          current.left = newNode;
+          return this;
+        }
+      } else if (val > current.val) {
+        if (current.right) {
+          current = current.right;
+        } else {
+          current.right = newNode;
+          return this;
+        }
+      } else {
+        console.log("Already exists");
+        return this;
+      }
+    }
+  }
+
+  // Breadth first approach
+  BFS() {
+    const data = [],
+      queue = [];
+    let node = this.root;
+    queue.push(this.root);
+
+    while (queue.length) {
+      node = queue.shift();
+      data.push(node.val);
+
+      if (node.left) queue.push(node.left);
+      if (node.right) queue.push(node.right);
+    }
+    return data;
+  }
+
+  // Depth first approach
+  dfsPreOrder() {
+    // visit nodes from left to right
+    // the root is the first thing that we visit
+    const data = [];
+
+    function traverse(node) {
+      data.push(node.val);
+
+      if (node.left) traverse(node.left);
+      if (node.right) traverse(node.right);
+    }
+
+    traverse(this.root);
+
+    return data;
+  }
+
+  dfsPostOrder() {
+    // traverse the entire tree first, then visit nodes
+    // the root is the last thing that is visited
+    const data = [];
+    let current = this.root;
+
+    function traverse(node) {
+      if (node.left) traverse(node.left);
+      if (node.right) traverse(node.right);
+
+      data.push(node.val);
+    }
+
+    traverse(current);
+
+    return data;
+  }
+
+  dfsInOrder() {
+    // traverse the entire tree first, then visit nodes in ORDER (get sorted array)
+    // the root is the last thing that is visited
+    const data = [];
+    let current = this.root;
+
+    function traverse(node) {
+      if (node.left) traverse(node.left);
+      data.push(node.val);
+      if (node.right) traverse(node.right);
+    }
+
+    traverse(current);
+
+    return data;
+  }
+}
+
+const tree = new BST();
+tree.root = new Node(10);
+tree.root.left = new Node(5);
+tree.root.left.left = new Node(2);
+tree.root.left.right = new Node(7);
+tree.root.left.left.left = new Node(1);
+tree.root.right = new Node(15);
+
+//BFS
+// console.log(tree.BFS());
+//BFS
+
+//DFS preOrder
+// console.log(tree.dfsPreOrder());
+//DFS preOrder
+
+//DFS postOrder
+// console.log(tree.dfsPostOrder());
+//DFS postOrder
+
+//DFS inOrder
+// console.log(tree.dfsInOrder());
+//DFS inOrder
+```
