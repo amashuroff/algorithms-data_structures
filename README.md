@@ -976,7 +976,7 @@ function strLenCompare(len1, len2) {
 }
 
 // swapping
-function    arr, idx1, idx2) {
+function swap(arr, idx1, idx2) {
   let temp = arr[idx1];
   arr[idx1] = arr[idx2];
   arr[idx2] = temp;
@@ -2135,4 +2135,21 @@ tree.root.right = new Node(15);
 //DFS inOrder
 // console.log(tree.dfsInOrder());
 //DFS inOrder
+```
+
+### Binary Heaps
+
+- Very similary to Binary Tree, but with some different rules
+- in Max Binary Heap parent nodes are always larger than the child nodes (EVERY LEVEL DOWN THE TREE)
+- in Min Binary Heap parent nodes are always smaller than the child nodes
+
+- In MBH the parent is greater than the child, but it's not guaranteed for the sibling nodes
+- Binary heap is as compact as possible. All the children of each node are as full as they can be and left children are filled out first
+
+- Binary Heaps in arrays: for any index of an array n, the left child is stored at 2n+1, the right child is stored at 2n+2 (i)
+
+- For any child node at index n, its parent is at index Math.floor((n-1)/2)
+
+```javascript
+
 ```
