@@ -2150,6 +2150,208 @@ tree.root.right = new Node(15);
 
 - For any child node at index n, its parent is at index Math.floor((n-1)/2)
 
-```javascript
+- Priority queue, naive: iterate through the list of items with set priority, compare them and decide which one has higher priority (1 > 5) for example
 
+- Priority queue can be implemented in many ways, but most commonly with the HEAP, it is just an abstract concept
+
+- Big O: Insertion/Removal O(log n), Search O(n )
+
+```javascript
+class MaxBinaryHeap {
+  constructor() {
+    this.values = [72, 24, 15, 10, 7, 5];
+  }
+
+  swap(arr, idx1, idx2) {
+    let temp = arr[idx1];
+    arr[idx1] = arr[idx2];
+    arr[idx2] = temp;
+  }
+
+  insert(value) {
+    // add to the end
+    this.values.push(value);
+
+    // bubble it up
+    let i = this.values.length - 1;
+
+    while (i > 0) {
+      let parentIndex = Math.floor((i - 1) / 2);
+      // if node value is less then the parent value, break
+      if (this.values[i] <= this.values[parentIndex]) break;
+      // otherwise swap the parent and the value
+      this.swap(this.values, parentIndex, i);
+
+      i = parentIndex;
+    }
+  }
+
+  extractMax() {
+    // remove the root
+    // replace with the most recently added (the last one)
+    // Adjust (sink down) - procedure for deleting the root from the heap,
+    // and restoring the properties of the heap (down-heap)
+
+    const max = this.values[0];
+    // edge case, when the heap has 1 item only
+    if (this.values.length === 1) {
+      this.values.pop();
+      return max;
+    }
+
+    const end = this.values.pop();
+    this.values[0] = end;
+    this.sinkDown();
+    return max;
+  }
+
+  sinkDown() {
+    let i = 0;
+    const length = this.values.length;
+    const elementToSink = this.values[0];
+
+    while (true) {
+      const leftChildIndex = 2 * i + 1;
+      const rightChildIndex = 2 * i + 2;
+      let leftChild, rightChild;
+      let swap = null;
+
+      if (leftChildIndex < length) {
+        leftChild = this.values[leftChildIndex];
+        if (leftChild > elementToSink) {
+          swap = leftChildIndex;
+        }
+      }
+
+      if (rightChildIndex < length) {
+        rightChild = this.values[rightChildIndex];
+        if (
+          (!swap && rightChild > elementToSink) ||
+          (swap && rightChild > leftChild)
+        ) {
+          swap = rightChildIndex;
+        }
+      }
+
+      if (swap === null) break;
+
+      this.swap(this.values, i, swap);
+
+      i = swap;
+    }
+  }
+}
+
+// PRIORITY QUEUE
+class Node {
+  constructor(value, priority) {
+    this.value = value;
+    this.priority = priority;
+  }
+}
+
+class PriorityQueue {
+  constructor() {
+    this.values = [];
+  }
+
+  swap(arr, idx1, idx2) {
+    let temp = arr[idx1];
+    arr[idx1] = arr[idx2];
+    arr[idx2] = temp;
+  }
+
+  enqueue(value, priority) {
+    const newNode = new Node(value, priority);
+    this.values.push(newNode);
+    this.bubbleUp();
+  }
+
+  bubbleUp() {
+    let i = this.values.length - 1;
+    const element = this.values[i];
+
+    while (i > 0) {
+      let parentIndex = Math.floor((i - 1) / 2);
+      let parent = this.values[parentIndex];
+
+      if (element.priority <= parent.priority) break;
+
+      this.swap(this.values, parentIndex, i);
+      i = parentIndex;
+    }
+  }
+
+  dequeue() {
+    const max = this.values[0];
+    // edge case, when the heap has 1 item only
+    if (this.values.length === 1) {
+      this.values.pop();
+      return max;
+    }
+
+    const end = this.values.pop();
+    this.values[0] = end;
+    this.sinkDown();
+    return max;
+  }
+
+  sinkDown() {
+    let i = 0;
+    const length = this.values.length;
+    const elementToSink = this.values[0];
+
+    while (true) {
+      const leftChildIndex = 2 * i + 1;
+      const rightChildIndex = 2 * i + 2;
+      let leftChild, rightChild;
+      let swap = null;
+
+      if (leftChildIndex < length) {
+        leftChild = this.values[leftChildIndex];
+        if (leftChild.priority > elementToSink.priority) {
+          swap = leftChildIndex;
+        }
+      }
+
+      if (rightChildIndex < length) {
+        rightChild = this.values[rightChildIndex];
+        if (
+          (!swap && rightChild.priority > elementToSink.priority) ||
+          (swap && rightChild.priority > leftChild.priority)
+        ) {
+          swap = rightChildIndex;
+        }
+      }
+
+      if (swap === null) break;
+
+      this.swap(this.values, i, swap);
+
+      i = swap;
+    }
+  }
+}
+
+const heap = new MaxBinaryHeap();
+
+//INSERT
+// heap.insert(52);
+//INSERT
+
+//EXTRACT MAX
+// heap.extractMax();
+//EXTRACT MAX
+
+// console.log(heap);
+
+// PRIORITY QUEUE
+const priorityQueue = new PriorityQueue();
+priorityQueue.enqueue("headache", 1);
+priorityQueue.enqueue("exploded head", 5);
+priorityQueue.enqueue("cut", 3);
+priorityQueue.enqueue("cold", 2);
+// PRIORITY QUEUE
+
+// console.log(priorityQueue);
 ```
