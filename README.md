@@ -2512,3 +2512,74 @@ hashMap.set("salmon", "#fa8072");
 // hashMap.keys();
 // //KEYS
 ```
+
+### Graphs
+
+- Graph is a collection of nodes and connections between those nodes
+- Uses for graphs: Social networks, location/mapping, routing algs, visual hierarchy,
+
+- Vertex: node
+- Edge: connection between nodes
+- Weighted/UnWeighted: values assigned to distances between vertices. Each edge has a value associated with it
+- Directed/Undirected: directions assigned to distances between vertices. Represents the polarity of the edge
+
+- Representing Graphs:
+
+1. Adjacency list: can take up less space (in sparse graphs), faster to iterate over all edges, can be slower to lookup specific edge
+2. Adjacency matrix: takes up more space (in sparse graphs), slower to iterate over all edges, faster to lookup specific edge
+
+```javascript
+// Representing Graphs
+// Adjacency list
+class Graph {
+  // undirected graph
+  constructor() {
+    this.adjacencyList = {};
+  }
+
+  addVertex(vertex) {
+    if (!this.adjacencyList[vertex]) this.adjacencyList[vertex] = [];
+  }
+
+  addEdge(v1, v2) {
+    this.adjacencyList[v1].push(v2);
+
+    this.adjacencyList[v2].push(v1);
+  }
+
+  removeEdge(v1, v2) {
+    this.adjacencyList[v1] = this.adjacencyList[v1].filter(
+      (edge) => edge !== v2
+    );
+
+    this.adjacencyList[v2] = this.adjacencyList[v2].filter(
+      (edge) => edge !== v1
+    );
+  }
+
+  removeVertex(v) {
+    let edges = this.adjacencyList[v];
+    for (let i = 0; i < edges.length; i++) {
+      this.removeEdge(v, edges[i]);
+    }
+    delete this.adjacencyList[v];
+  }
+}
+
+const graph = new Graph();
+
+// ADD VERTEX
+graph.addVertex("Tokyo");
+graph.addVertex("Moscow");
+// ADD VERTEX
+
+// ADD EDGE
+graph.addEdge("Tokyo", "Moscow");
+// ADD EDGE
+
+// REMOVE VERTEX
+graph.removeVertex("Tokyo", "Moscow");
+// REMOVE VERTEX
+
+console.log(graph);
+```
