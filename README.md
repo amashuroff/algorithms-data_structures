@@ -2355,3 +2355,160 @@ priorityQueue.enqueue("cold", 2);
 
 // console.log(priorityQueue);
 ```
+
+### Hash Tables / Hash Map
+
+- Extremely commonly used
+- Hash tables are used to store key-value pairs
+- keys are not ordered
+- Hast tables are FAST, finding, removing, adding
+- Nearly every programming lang has some sort of hast table
+- in JS objects are basically hast maps, but have some restrictions
+- To implement a hash table we are using array in this example
+- in order to look up values by key, we need a way to convert keys into valid array indices
+- a function that performs that task is called hash function
+
+- What makes the good hash?
+
+1. it should be fast -> O(1)
+2. distributes uniformly, doesn't cluster outputs at specific indices
+3. Should be pseudo-random
+4. should be deterministic (same input yields same output)
+
+- How to solve collision problem?
+
+1. Separate Chaining: at each index, if we have collisions, we store data with yet another structure, array or ll (joint store them) (allows to store more than arr.length items)
+2. Linear probing: when find a collision, we search through array for the next empty slot (store only arr.length items)
+
+- Insertion/Deletion/Access -> O(1)
+- Searching -> key O(1), val O(n)
+
+- Cryptographically secured hash function have different rules
+
+```javascript
+function hash(key, arrayLen) {
+  let total = 0;
+  for (let char of key) {
+    let value = char.charCodeAt(0) - 96;
+    total = (total + value) % arrayLen;
+  }
+
+  return total;
+}
+// problems: only hashes strings
+// not constant time
+// data can be clustered relatively easily
+
+function hashImproved(key, arrayLen) {
+  let total = 0;
+  const WEIRD_PRIME = 31;
+
+  // restrict for 100 iterations max
+  for (let i = 0; i < Math.min(key.length, 100); i++) {
+    let char = key[i];
+
+    let value = char.charCodeAt(0) - 96;
+    total = (total * WEIRD_PRIME + value) % arrayLen;
+  }
+
+  return total;
+}
+
+class Hash {
+  constructor(size = 53) {
+    this.keyMap = new Array(size);
+  }
+
+  _hash(key) {
+    let total = 0;
+    const WEIRD_PRIME = 31;
+
+    // restrict for 100 iterations max
+    for (let i = 0; i < Math.min(key.length, 100); i++) {
+      let char = key[i];
+
+      let value = char.charCodeAt(0) - 96;
+      total = (total * WEIRD_PRIME + value) % this.keyMap.length;
+    }
+
+    return total;
+  }
+
+  set(key, val) {
+    // accept val/key
+    // hash key
+    const idx = this._hash(key);
+
+    // if no data, create an array
+    if (!this.keyMap[idx]) {
+      this.keyMap[idx] = [];
+    }
+
+    // push value to an array
+    this.keyMap[idx].push([key, val]);
+  }
+
+  get(key) {
+    const idx = this._hash(key);
+
+    if (this.keyMap[idx]) {
+      const arrayOfKeyValArrays = this.keyMap[idx];
+
+      for (let i = 0; i < arrayOfKeyValArrays.length; i++) {
+        if (arrayOfKeyValArrays[i][0] === key) {
+          console.log(arrayOfKeyValArrays[i]);
+        }
+      }
+    }
+
+    console.log(undefined);
+  }
+
+  keys() {
+    // returns all the unique keys
+    const result = [];
+
+    for (let prop of this.keyMap) {
+      if (prop) {
+        for (let i = 0; i < prop.length; i++) {
+          result.push(prop[i][0]);
+        }
+      }
+    }
+    return Array.from(new Set(result));
+  }
+
+  vals() {
+    // returns all unique vals
+    const valuesArr = [];
+
+    for (let i = 0; i < this.keyMap.length; i++) {
+      if (this.keyMap[i]) {
+        for (let j = 0; j < this.keyMap[i]; j++) {
+          const value = this.keyMap[i][j][1];
+
+          if (!valuesArr.includes(value)) {
+            valuesArr.push(value);
+          }
+        }
+      }
+    }
+  }
+}
+
+const hashMap = new Hash();
+
+// SET
+hashMap.set("darkblue", "#00008b");
+hashMap.set("darkblue", "#00008b");
+hashMap.set("salmon", "#fa8072");
+// SET
+
+// // GET
+// hashMap.get("darkblue");
+// // GET
+
+// //KEYS
+// hashMap.keys();
+// //KEYS
+```
