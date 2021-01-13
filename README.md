@@ -2528,6 +2528,13 @@ hashMap.set("salmon", "#fa8072");
 1. Adjacency list: can take up less space (in sparse graphs), faster to iterate over all edges, can be slower to lookup specific edge
 2. Adjacency matrix: takes up more space (in sparse graphs), slower to iterate over all edges, faster to lookup specific edge
 
+### Graph Traversal
+
+- What is traversing the graph: visiting, updating, checking
+- Uses: recommendations, web search (in the early days), gps navigation, AI (shortest path to win the game), solving mazes, peer to peer networking
+- Depth first search in graphs means moving away from the root vertex
+- Breadth first search means visiting siblings first, then moving away
+
 ```javascript
 // Representing Graphs
 // Adjacency list
@@ -2564,22 +2571,108 @@ class Graph {
     }
     delete this.adjacencyList[v];
   }
+
+  depthFirsRecursive(vertex) {
+    const resultsList = [];
+    const visited = {};
+
+    const dfsHelper = (vertex) => {
+      const edges = this.adjacencyList[vertex];
+
+      if (edges.length === 0) return null;
+      visited[vertex] = true;
+      resultsList.push(vertex);
+
+      edges.forEach((edge) => {
+        if (!visited[edge]) {
+          return dfsHelper(edge);
+        }
+      });
+    };
+
+    dfsHelper(vertex);
+
+    return resultsList;
+  }
+
+  depthFirstIteratively(start) {
+    const resultsList = [];
+    const visited = {};
+    // LIFO
+    const pseudoStack = [start];
+    let vertex;
+
+    const dfsHelper = () => {
+      while (pseudoStack.length) {
+        vertex = pseudoStack.pop();
+
+        if (!visited[vertex]) {
+          visited[vertex] = true;
+          resultsList.push(vertex);
+
+          this.adjacencyList[vertex].forEach((edge) => {
+            pseudoStack.push(edge);
+          });
+        }
+      }
+    };
+
+    dfsHelper();
+    return resultsList;
+  }
+
+  breadthFirst(start) {
+    // FIFO
+    const pseudoQueue = [start];
+    const resultsList = [];
+    const visited = {
+      [start]: true,
+    };
+
+    let currentVertex;
+
+    const bfsHelper = () => {
+      while (pseudoQueue.length) {
+        currentVertex = pseudoQueue.shift();
+        resultsList.push(currentVertex);
+
+        this.adjacencyList[currentVertex].forEach((edge) => {
+          if (!visited[edge]) {
+            visited[edge] = true;
+            pseudoQueue.push(edge);
+          }
+        });
+      }
+    };
+
+    bfsHelper();
+
+    return resultsList;
+  }
 }
 
-const graph = new Graph();
+const g = new Graph();
 
-// ADD VERTEX
-graph.addVertex("Tokyo");
-graph.addVertex("Moscow");
-// ADD VERTEX
+g.addVertex("A");
+g.addVertex("B");
+g.addVertex("C");
+g.addVertex("D");
+g.addVertex("E");
+g.addVertex("F");
 
-// ADD EDGE
-graph.addEdge("Tokyo", "Moscow");
-// ADD EDGE
+g.addEdge("A", "B");
+g.addEdge("A", "C");
+g.addEdge("B", "D");
+g.addEdge("C", "E");
+g.addEdge("D", "E");
+g.addEdge("D", "F");
+g.addEdge("E", "F");
 
-// REMOVE VERTEX
-graph.removeVertex("Tokyo", "Moscow");
-// REMOVE VERTEX
+console.log(g);
 
-console.log(graph);
+console.log(g.depthFirsRecursive("A"));
+
+console.log(g.depthFirstIteratively("A"));
+
+console.log(g.breadthFirst("A"));
 ```
