@@ -2676,3 +2676,157 @@ console.log(g.depthFirstIteratively("A"));
 
 console.log(g.breadthFirst("A"));
 ```
+
+### Dijkstra's algorithm
+
+- Finds the shortest path between the 2 vertexes on a graph
+
+```javascript
+class PriorityQueue {
+  constructor() {
+    this.values = [];
+  }
+  enqueue(val, priority) {
+    this.values.push({ val, priority });
+    this.sort();
+  }
+  dequeue() {
+    return this.values.shift();
+  }
+  sort() {
+    this.values.sort((a, b) => a.priority - b.priority);
+  }
+}
+
+class WeightedGraph {
+  constructor() {
+    this.adjacencyList = {};
+  }
+  addVertex(vertex) {
+    if (!this.adjacencyList[vertex]) this.adjacencyList[vertex] = [];
+  }
+  addEdge(vertex1, vertex2, weight) {
+    this.adjacencyList[vertex1].push({ node: vertex2, weight });
+    this.adjacencyList[vertex2].push({ node: vertex1, weight });
+  }
+  Dijkstra(start, finish) {
+    const nodes = new PriorityQueue();
+    const distances = {};
+    const previous = {};
+    let path = []; //to return at end
+    let smallest;
+    //build up initial state
+    for (let vertex in this.adjacencyList) {
+      if (vertex === start) {
+        distances[vertex] = 0;
+        nodes.enqueue(vertex, 0);
+      } else {
+        distances[vertex] = Infinity;
+        nodes.enqueue(vertex, Infinity);
+      }
+      previous[vertex] = null;
+    }
+    // as long as there is something to visit
+    while (nodes.values.length) {
+      smallest = nodes.dequeue().val;
+      if (smallest === finish) {
+        //WE ARE DONE
+        //BUILD UP PATH TO RETURN AT END
+        while (previous[smallest]) {
+          path.push(smallest);
+          smallest = previous[smallest];
+        }
+        break;
+      }
+      if (smallest || distances[smallest] !== Infinity) {
+        for (let neighbor in this.adjacencyList[smallest]) {
+          //find neighboring node
+          let nextNode = this.adjacencyList[smallest][neighbor];
+          //calculate new distance to neighboring node
+          let candidate = distances[smallest] + nextNode.weight;
+          let nextNeighbor = nextNode.node;
+          if (candidate < distances[nextNeighbor]) {
+            //updating new smallest distance to neighbor
+            distances[nextNeighbor] = candidate;
+            //updating previous - How we got to neighbor
+            previous[nextNeighbor] = smallest;
+            //enqueue in priority queue with new priority
+            nodes.enqueue(nextNeighbor, candidate);
+          }
+        }
+      }
+    }
+    return path.concat(smallest).reverse();
+  }
+}
+
+var graph = new WeightedGraph();
+graph.addVertex("A");
+graph.addVertex("B");
+graph.addVertex("C");
+graph.addVertex("D");
+graph.addVertex("E");
+graph.addVertex("F");
+
+graph.addEdge("A", "B", 4);
+graph.addEdge("A", "C", 2);
+graph.addEdge("B", "E", 3);
+graph.addEdge("C", "D", 2);
+graph.addEdge("C", "F", 4);
+graph.addEdge("D", "E", 3);
+graph.addEdge("D", "F", 1);
+graph.addEdge("E", "F", 1);
+
+console.log(graph.Dijkstra("A", "E"));
+
+// ["A", "C", "D", "F", "E"]
+```
+
+### Dynamic programming
+
+- a method for solving complex problems by breaking it down into a collection of simpler sub problems, solving each of the sub problems just once, and storing their solutions
+- Most problems can't be solved with dynamic programming, only a small set.
+- DYNAMIC PROGRAMMING refers to coming up with an optimal solution, it's just an impressive word
+- We need a subset of problems that overlap, if it can be broken down into sub problems that overlap and have reused pieces, sub problems that are re-used somewhere
+- A problem is set to have an optimal substructure if an optimal solution can be constructed from optimal solutions of it's sub problems
+- Memoization: storing the results of an expensive function calls and returning the cached result when the same inputs occur again
+- Tabulation: storing the result of previous result in a table (usually in array), ususally done using iteration, better space complexity can be achieved when using tabulation
+
+```javascript
+// O (2^n) which is really bad
+function fib(n) {
+  if (n <= 2) return 1;
+
+  return fib(n - 1) + fib(n - 2);
+}
+
+//memoized solution
+// TOP-DOWN APPROACH
+// O(n)
+function fibMemo(n, memo = []) {
+  if (memo[n] !== undefined) return memo[n];
+
+  if (n <= 2) return 1;
+
+  const res = fib(n - 1, memo) + fib(n - 2, memo);
+
+  memo[n] = res;
+
+  return res;
+}
+
+// tabulation solution
+// BOTTOM-UP
+// O(n)
+function fibTab(n) {
+  if (n <= 2) return 1;
+
+  const fibNums = [0, 1, 1];
+
+  for (let i = 3; i <= n; i++) {
+    fibNums[i] = fibNums[i - 1] + fibNums[i - 2];
+  }
+
+  return fibNums[n];
+}
+```
